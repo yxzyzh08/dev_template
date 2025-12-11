@@ -1,0 +1,1 @@
+{"version":3,"file":"generate-prd.d.ts","sourceRoot":"","sources":["../../../src/cli/commands/generate-prd.ts"],"names":[],"mappings":"AAUA,MAAM,WAAW,yBAAyB;IACxC,MAAM,CAAC,EAAE,MAAM,CAAC;IAChB,KAAK,CAAC,EAAE,OAAO,CAAC;IAChB,UAAU,CAAC,EAAE,OAAO,CAAC;CACtB;AAKD,wBAAsB,yBAAyB,CAC7C,OAAO,EAAE,yBAAyB,GACjC,OAAO,CAAC,IAAI,CAAC,CAuCf"}

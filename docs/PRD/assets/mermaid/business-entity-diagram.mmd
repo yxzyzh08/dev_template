@@ -1,0 +1,47 @@
+erDiagram
+    USER ||--o{ PROJECT : creates
+    PROJECT ||--o{ TEMPLATE : uses
+    PROJECT ||--o{ DOCUMENT : contains
+    TEMPLATE ||--o{ SKILL : includes
+
+    USER {
+        uuid id PK
+        string name
+        string email
+        timestamp created_at
+    }
+
+    PROJECT {
+        uuid id PK
+        uuid user_id FK
+        string name
+        string description
+        enum type "web-fullstack, mobile-app, backend-api, cli-tool"
+        timestamp created_at
+    }
+
+    TEMPLATE {
+        uuid id PK
+        string template_id UK
+        string name
+        string category
+        boolean needs_prototype
+        json metadata
+    }
+
+    SKILL {
+        uuid id PK
+        string skill_name UK "requirements-analyzer, architecture-designer, developer-guide, test-planner"
+        string description
+        text skill_content
+    }
+
+    DOCUMENT {
+        uuid id PK
+        uuid project_id FK
+        enum type "overview, modules, stories, flow, prototype, acceptance, prd"
+        string file_path
+        text content
+        timestamp created_at
+        timestamp updated_at
+    }
