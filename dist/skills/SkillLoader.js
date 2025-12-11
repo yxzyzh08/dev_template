@@ -19,8 +19,7 @@ class SkillLoader {
         const skillFiles = files.filter((f) => f.endsWith('.md'));
         const skills = [];
         for (const file of skillFiles) {
-            const filePath = path_1.default.join(dirPath, file);
-            const skill = await this.loadFromFile(filePath);
+            const skill = await this.loadFromFile(file);
             if (skill) {
                 skills.push(skill);
             }
@@ -90,9 +89,9 @@ class SkillLoader {
         const skillFiles = files.filter((f) => f.endsWith('.md'));
         const results = [];
         for (const file of skillFiles) {
-            const filePath = path_1.default.join(dirPath, file);
-            const valid = await this.validateSkillFile(filePath);
-            results.push({ file, valid });
+            const valid = await this.validateSkillFile(file);
+            const fileName = path_1.default.basename(file);
+            results.push({ file: fileName, valid });
         }
         const validCount = results.filter((r) => r.valid).length;
         const invalidFiles = results.filter((r) => !r.valid).map((r) => r.file);

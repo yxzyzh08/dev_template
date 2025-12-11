@@ -34,13 +34,29 @@ async function promptProjectName(defaultName) {
     return response.projectName.trim();
 }
 async function promptProjectDescription() {
+    console.log('');
+    console.log('💡 提示: 如需输入多行文本，建议直接粘贴后按回车（忽略显示重复）');
+    console.log('');
     const response = await (0, prompts_1.default)({
         type: 'text',
         name: 'description',
-        message: '请输入项目描述（可选）',
+        message: '请输入项目描述（可选，按回车跳过）',
         initial: '',
     });
-    return response.description ? response.description.trim() : null;
+    if (response.description === undefined) {
+        return null;
+    }
+    const cleaned = response.description
+        ? response.description
+            .trim()
+            .split('\n')
+            .filter((line, index, array) => {
+            return index === array.length - 1 || line !== array[index + 1];
+        })
+            .join('\n')
+            .trim()
+        : null;
+    return cleaned || null;
 }
 async function promptAuthor() {
     const response = await (0, prompts_1.default)({

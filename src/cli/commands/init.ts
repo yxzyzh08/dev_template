@@ -88,35 +88,38 @@ async function collectProjectMetadata(
   let name = projectName;
   let type = options.type;
 
-  // 非交互模式：必须提供所有必需参数
+  // 如果没有提供项目名称，使用当前目录名
+  if (!name) {
+    const path = require('path');
+    const currentDir = process.cwd();
+    name = path.basename(currentDir);
+
+    // 提示用户正在当前目录初始化
+    logger.log(`📁 在当前目录初始化项目: ${name}`);
+    logger.log('');
+  }
+
+  // 非交互模式：必须提供项目类型
   if (options.nonInteractive) {
-    if (!name) {
-      throw new Error('非交互模式下必须提供项目名称');
-    }
     if (!type) {
       throw new Error('非交互模式下必须提供项目类型 (--type)');
     }
 
     return {
-      projectName: name,
+      projectName: name!,  // 确保已赋值
       projectType: type,
       gitEnabled: options.git,
       installDeps: options.install,
+      // 新增：标记是否在当前目录初始化
+      customVariables: {
+        initInCurrentDir: !projectName,
+      },
     };
   }
 
   // 交互模式：提示用户输入缺少的信息
 
-  // 1. 项目名称
-  if (!name) {
-    const inputName = await promptProjectName();
-    if (!inputName) {
-      return null; // 用户取消
-    }
-    name = inputName;
-  }
-
-  // 2. 项目类型
+  // 1. 项目类型
   if (!type) {
     const selectedType = await promptProjectType();
     if (!selectedType) {
@@ -125,19 +128,23 @@ async function collectProjectMetadata(
     type = selectedType;
   }
 
-  // 3. 项目描述（可选）
+  // 2. 项目描述（可选）
   const description = await promptProjectDescription();
 
-  // 4. 作者（可选）
+  // 3. 作者（可选）
   const author = await promptAuthor();
 
   return {
-    projectName: name,
+    projectName: name!,  // 确保已赋值
     projectType: type,
     description: description || undefined,
     author: author || undefined,
     gitEnabled: options.git,
     installDeps: options.install,
+    // 新增：标记是否在当前目录初始化
+    customVariables: {
+      initInCurrentDir: !projectName,  // 如果没有提供项目名，则在当前目录初始化
+    },
   };
 }
 
@@ -167,11 +174,23 @@ function displaySummary(metadata: ProjectMetadata, logger: Logger): void {
  * 显示后续步骤
  */
 function displayNextSteps(metadata: ProjectMetadata, logger: Logger): void {
+  const initInCurrentDir = metadata.customVariables?.initInCurrentDir === true;
+
   logger.log('');
   logger.log('📚 推荐阅读:');
-  logger.log(`   ${metadata.projectName}/README.md - 项目说明`);
-  logger.log(`   ${metadata.projectName}/CLAUDE.md - AI辅助开发流程`);
-  logger.log(`   ${metadata.projectName}/docs/00-项目概览.md - 项目概览`);
+
+  if (initInCurrentDir) {
+    // 当前目录模式
+    logger.log(`   ./README.md - 项目说明`);
+    logger.log(`   ./CLAUDE.md - AI辅助开发流程`);
+    logger.log(`   ./docs/00-项目概览.md - 项目概览`);
+  } else {
+    // 新目录模式
+    logger.log(`   ${metadata.projectName}/README.md - 项目说明`);
+    logger.log(`   ${metadata.projectName}/CLAUDE.md - AI辅助开发流程`);
+    logger.log(`   ${metadata.projectName}/docs/00-项目概览.md - 项目概览`);
+  }
+
   logger.log('');
   logger.log('🎯 开始开发:');
   logger.log('   1. 使用Claude进行需求分析（调用 requirements-analyzer skill）');

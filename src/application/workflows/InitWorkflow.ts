@@ -130,13 +130,19 @@ export class InitWorkflow {
   private async prepareTargetDirectory(metadata: ProjectMetadata): Promise<string> {
     this.spinner.start('准备项目目录...');
 
-    const targetDir = path.resolve(process.cwd(), metadata.projectName);
+    // 检查是否在当前目录初始化
+    const initInCurrentDir = metadata.customVariables?.initInCurrentDir === true;
+
+    const targetDir = initInCurrentDir
+      ? process.cwd()  // 当前目录
+      : path.resolve(process.cwd(), metadata.projectName);  // 新目录
 
     // 检查目录是否存在
     const exists = await this.fs.exists(targetDir);
     if (exists) {
       const files = await this.fs.listFiles(targetDir);
-      if (files.length > 0) {
+      if (files.length > 0 && !initInCurrentDir) {
+        // 如果是新目录模式且目录不为空，报错
         this.spinner.fail();
         throw new Error(
           `目标目录不为空: ${targetDir}\n提示: 使用 --force 选项强制覆盖或选择其他项目名称`
@@ -144,7 +150,7 @@ export class InitWorkflow {
       }
     }
 
-    // 创建目录
+    // 创建目录（如果不存在）
     await this.fs.ensureDir(targetDir);
     this.spinner.succeed('项目目录准备完成');
 

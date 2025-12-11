@@ -74,11 +74,14 @@ class InitWorkflow {
     }
     async prepareTargetDirectory(metadata) {
         this.spinner.start('准备项目目录...');
-        const targetDir = path_1.default.resolve(process.cwd(), metadata.projectName);
+        const initInCurrentDir = metadata.customVariables?.initInCurrentDir === true;
+        const targetDir = initInCurrentDir
+            ? process.cwd()
+            : path_1.default.resolve(process.cwd(), metadata.projectName);
         const exists = await this.fs.exists(targetDir);
         if (exists) {
             const files = await this.fs.listFiles(targetDir);
-            if (files.length > 0) {
+            if (files.length > 0 && !initInCurrentDir) {
                 this.spinner.fail();
                 throw new Error(`目标目录不为空: ${targetDir}\n提示: 使用 --force 选项强制覆盖或选择其他项目名称`);
             }

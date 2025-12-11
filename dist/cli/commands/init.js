@@ -39,10 +39,14 @@ async function executeInitCommand(projectName, options) {
 async function collectProjectMetadata(projectName, options, logger) {
     let name = projectName;
     let type = options.type;
+    if (!name) {
+        const path = require('path');
+        const currentDir = process.cwd();
+        name = path.basename(currentDir);
+        logger.log(`📁 在当前目录初始化项目: ${name}`);
+        logger.log('');
+    }
     if (options.nonInteractive) {
-        if (!name) {
-            throw new Error('非交互模式下必须提供项目名称');
-        }
         if (!type) {
             throw new Error('非交互模式下必须提供项目类型 (--type)');
         }
@@ -51,14 +55,10 @@ async function collectProjectMetadata(projectName, options, logger) {
             projectType: type,
             gitEnabled: options.git,
             installDeps: options.install,
+            customVariables: {
+                initInCurrentDir: !projectName,
+            },
         };
-    }
-    if (!name) {
-        const inputName = await (0, prompts_1.promptProjectName)();
-        if (!inputName) {
-            return null;
-        }
-        name = inputName;
     }
     if (!type) {
         const selectedType = await (0, prompts_1.promptProjectType)();
@@ -76,6 +76,9 @@ async function collectProjectMetadata(projectName, options, logger) {
         author: author || undefined,
         gitEnabled: options.git,
         installDeps: options.install,
+        customVariables: {
+            initInCurrentDir: !projectName,
+        },
     };
 }
 function displaySummary(metadata, logger) {
@@ -94,11 +97,19 @@ function displaySummary(metadata, logger) {
     logger.log('');
 }
 function displayNextSteps(metadata, logger) {
+    const initInCurrentDir = metadata.customVariables?.initInCurrentDir === true;
     logger.log('');
     logger.log('📚 推荐阅读:');
-    logger.log(`   ${metadata.projectName}/README.md - 项目说明`);
-    logger.log(`   ${metadata.projectName}/CLAUDE.md - AI辅助开发流程`);
-    logger.log(`   ${metadata.projectName}/docs/00-项目概览.md - 项目概览`);
+    if (initInCurrentDir) {
+        logger.log(`   ./README.md - 项目说明`);
+        logger.log(`   ./CLAUDE.md - AI辅助开发流程`);
+        logger.log(`   ./docs/00-项目概览.md - 项目概览`);
+    }
+    else {
+        logger.log(`   ${metadata.projectName}/README.md - 项目说明`);
+        logger.log(`   ${metadata.projectName}/CLAUDE.md - AI辅助开发流程`);
+        logger.log(`   ${metadata.projectName}/docs/00-项目概览.md - 项目概览`);
+    }
     logger.log('');
     logger.log('🎯 开始开发:');
     logger.log('   1. 使用Claude进行需求分析（调用 requirements-analyzer skill）');

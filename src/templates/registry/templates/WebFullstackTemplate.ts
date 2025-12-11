@@ -4,6 +4,8 @@
  * 适用于前后端分离的Web应用项目
  */
 
+import path from 'path';
+import fs from 'fs-extra';
 import { Template, TemplateFile } from '@/types';
 
 export class WebFullstackTemplate {
@@ -294,15 +296,19 @@ coverage/
 
 ## 产品愿景
 
-[请补充产品愿景]
+{{#if description}}
+{{description}}
+{{else}}
+[请补充产品愿景和核心价值]
+{{/if}}
 
 ## 目标用户
 
-[请补充目标用户画像]
+[请在需求分析阶段补充目标用户画像]
 
-## 核心价值
+## 核心功能模块
 
-[请补充产品核心价值]
+[请在需求分析阶段补充核心功能]
 
 ## 开发进度
 

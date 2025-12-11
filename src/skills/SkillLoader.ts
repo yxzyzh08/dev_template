@@ -29,8 +29,8 @@ export class SkillLoader {
 
     const skills: Skill[] = [];
     for (const file of skillFiles) {
-      const filePath = path.join(dirPath, file);
-      const skill = await this.loadFromFile(filePath);
+      // listFiles 已经返回完整路径，不需要再拼接
+      const skill = await this.loadFromFile(file);
       if (skill) {
         skills.push(skill);
       }
@@ -133,9 +133,10 @@ export class SkillLoader {
     const results: Array<{ file: string; valid: boolean }> = [];
 
     for (const file of skillFiles) {
-      const filePath = path.join(dirPath, file);
-      const valid = await this.validateSkillFile(filePath);
-      results.push({ file, valid });
+      // listFiles 已经返回完整路径，不需要再拼接
+      const valid = await this.validateSkillFile(file);
+      const fileName = path.basename(file);
+      results.push({ file: fileName, valid });
     }
 
     const validCount = results.filter((r) => r.valid).length;

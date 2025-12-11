@@ -28,7 +28,9 @@
       "Bash(for module in \"用户模块\" \"账号授权\" \"书籍管理\" \"分享模块\" \"书籍圈子\")",
       "Bash(do git mv \"$module/04-交互设计.md\" \"$module/04-原型设计.md\")",
       "Bash(do git rm \"$module/03-边界条件.md\")",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []
