@@ -11,6 +11,7 @@
  */
 export type ProjectType =
   | 'web-fullstack'    // Web全栈应用
+  | 'frontend-demo'    // 纯前端项目（Demo演示）
   | 'mobile-app'       // 移动应用
   | 'backend-api'      // 后端API
   | 'cli-tool';        // CLI工具

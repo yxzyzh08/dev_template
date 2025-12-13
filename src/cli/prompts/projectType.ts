@@ -21,6 +21,11 @@ const PROJECT_TYPE_CHOICES: ProjectTypeChoice[] = [
     description: '前后端分离的Web应用，包含前端和后端代码',
   },
   {
+    type: 'frontend-demo',
+    name: '纯前端项目',
+    description: 'Demo演示、原型开发、静态网站等纯前端项目',
+  },
+  {
     type: 'mobile-app',
     name: '移动应用',
     description: 'iOS/Android移动应用（React Native/Flutter）',

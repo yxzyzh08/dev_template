@@ -1,101 +1,154 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WebFullstackTemplate = void 0;
-class WebFullstackTemplate {
-    getTemplate() {
-        return {
-            id: 'web-fullstack',
-            type: 'web-fullstack',
-            name: 'Web全栈项目',
-            version: '1.0.0',
-            description: '前后端分离的Web应用，包含完整的开发文档和Claude技能',
-            directories: [
-                'src/frontend',
-                'src/backend',
-                'src/shared',
-                'docs/modules',
-                'docs/architecture',
-                'docs/trackers',
-                'docs/PRD',
-                'docs/PRD/assets/images',
-                '.claude/skills',
-                'tests/frontend',
-                'tests/backend',
-                'tests/integration',
-                'public',
-            ],
-            files: this.getFiles(),
-            scripts: {
-                'dev:frontend': 'cd src/frontend && npm run dev',
-                'dev:backend': 'cd src/backend && npm run dev',
-                'dev': 'concurrently "npm run dev:frontend" "npm run dev:backend"',
-                'build:frontend': 'cd src/frontend && npm run build',
-                'build:backend': 'cd src/backend && npm run build',
-                'build': 'npm run build:frontend && npm run build:backend',
-                'test': 'jest',
-                'test:watch': 'jest --watch',
-                'lint': 'eslint . --ext .ts,.tsx',
-                'format': 'prettier --write "**/*.{ts,tsx,json,md}"',
-            },
-        };
-    }
-    getFiles() {
-        return [
-            {
-                targetPath: 'README.md',
-                content: this.getReadmeTemplate(),
-                isTemplate: true,
-            },
-            {
-                targetPath: 'package.json',
-                content: this.getPackageJsonTemplate(),
-                isTemplate: true,
-            },
-            {
-                targetPath: '.gitignore',
-                content: this.getGitignoreTemplate(),
-                isTemplate: false,
-            },
-            {
-                targetPath: 'CLAUDE.md',
-                content: this.getClaudeMdTemplate(),
-                isTemplate: true,
-            },
-            {
-                targetPath: 'docs/00-项目概览.md',
-                content: this.getProjectOverviewTemplate(),
-                isTemplate: true,
-            },
-            {
-                targetPath: '.claude/skills/requirements-analyzer.md',
-                content: this.getRequirementsAnalyzerSkill(),
-                isTemplate: false,
-            },
-            {
-                targetPath: '.claude/skills/architecture-designer.md',
-                content: this.getArchitectureDesignerSkill(),
-                isTemplate: false,
-            },
-            {
-                targetPath: '.claude/skills/developer-guide.md',
-                content: this.getDeveloperGuideSkill(),
-                isTemplate: false,
-            },
-            {
-                targetPath: '.claude/skills/test-planner.md',
-                content: this.getTestPlannerSkill(),
-                isTemplate: false,
-            },
-        ];
-    }
-    getReadmeTemplate() {
-        return `# {{projectName}}
+/**
+ * 纯前端项目模板
+ *
+ * 适用于Demo演示、原型开发、静态网站等纯前端项目
+ */
+
+import path from 'path';
+import fs from 'fs-extra';
+import { Template, TemplateFile } from '@/types';
+
+export class FrontendDemoTemplate {
+  getTemplate(): Template {
+    return {
+      id: 'frontend-demo',
+      type: 'frontend-demo',
+      name: '纯前端项目',
+      version: '1.0.0',
+      description: '纯前端项目，适用于Demo演示、原型开发、静态网站',
+
+      directories: [
+        // 源代码目录
+        'src',
+        'src/assets',
+        'src/assets/images',
+        'src/assets/styles',
+        'src/components',
+        'src/utils',
+
+        // 文档目录
+        'docs/modules',
+        'docs/architecture',
+        'docs/trackers',
+        'docs/PRD',
+        'docs/PRD/assets/images',
+
+        // Claude配置
+        '.claude/skills',
+
+        // 公共资源
+        'public',
+      ],
+
+      files: this.getFiles(),
+
+      scripts: {
+        'dev': 'vite',
+        'build': 'vite build',
+        'preview': 'vite preview',
+        'lint': 'eslint . --ext .js,.jsx,.ts,.tsx',
+        'format': 'prettier --write "**/*.{js,jsx,ts,tsx,css,html,json,md}"',
+      },
+    };
+  }
+
+  private getFiles(): TemplateFile[] {
+    return [
+      // README
+      {
+        targetPath: 'README.md',
+        content: this.getReadmeTemplate(),
+        isTemplate: true,
+      },
+
+      // package.json
+      {
+        targetPath: 'package.json',
+        content: this.getPackageJsonTemplate(),
+        isTemplate: true,
+      },
+
+      // .gitignore
+      {
+        targetPath: '.gitignore',
+        content: this.getGitignoreTemplate(),
+        isTemplate: false,
+      },
+
+      // CLAUDE.md
+      {
+        targetPath: 'CLAUDE.md',
+        content: this.getClaudeMdTemplate(),
+        isTemplate: true,
+      },
+
+      // index.html
+      {
+        targetPath: 'index.html',
+        content: this.getIndexHtmlTemplate(),
+        isTemplate: true,
+      },
+
+      // src/main.js
+      {
+        targetPath: 'src/main.js',
+        content: this.getMainJsTemplate(),
+        isTemplate: true,
+      },
+
+      // src/assets/styles/main.css
+      {
+        targetPath: 'src/assets/styles/main.css',
+        content: this.getMainCssTemplate(),
+        isTemplate: false,
+      },
+
+      // vite.config.js
+      {
+        targetPath: 'vite.config.js',
+        content: this.getViteConfigTemplate(),
+        isTemplate: false,
+      },
+
+      // 项目概览
+      {
+        targetPath: 'docs/00-项目概览.md',
+        content: this.getProjectOverviewTemplate(),
+        isTemplate: true,
+      },
+
+      // Skills
+      {
+        targetPath: '.claude/skills/requirements-analyzer.md',
+        content: this.getRequirementsAnalyzerSkill(),
+        isTemplate: false,
+      },
+      {
+        targetPath: '.claude/skills/architecture-designer.md',
+        content: this.getArchitectureDesignerSkill(),
+        isTemplate: false,
+      },
+      {
+        targetPath: '.claude/skills/developer-guide.md',
+        content: this.getDeveloperGuideSkill(),
+        isTemplate: false,
+      },
+      {
+        targetPath: '.claude/skills/test-planner.md',
+        content: this.getTestPlannerSkill(),
+        isTemplate: false,
+      },
+    ];
+  }
+
+  private getReadmeTemplate(): string {
+    return `# {{projectName}}
 
 > {{description}}
 
 ## 项目信息
 
-- **项目类型**: Web全栈应用
+- **项目类型**: 纯前端项目（Demo演示）
 - **版本**: {{version}}
 - **作者**: {{author}}
 - **许可证**: {{license}}
@@ -113,26 +166,35 @@ npm run dev
 # 构建生产版本
 npm run build
 
-# 运行测试
-npm test
+# 预览构建结果
+npm run preview
 \`\`\`
 
 ## 项目结构
 
 \`\`\`
 {{projectName}}/
-├── src/
-│   ├── frontend/     # 前端代码
-│   ├── backend/      # 后端代码
-│   └── shared/       # 共享代码
+├── src/              # 源代码
+│   ├── assets/       # 静态资源
+│   ├── components/   # 组件
+│   ├── utils/        # 工具函数
+│   └── main.js       # 入口文件
+├── public/           # 公共资源
 ├── docs/             # 项目文档
 │   ├── modules/      # 模块文档
 │   ├── architecture/ # 架构文档
 │   └── PRD/          # 产品需求文档
-├── tests/            # 测试文件
+├── inputs/           # 客户原始资料
 └── .claude/          # Claude技能配置
     └── skills/       # AI辅助开发技能
 \`\`\`
+
+## 技术栈
+
+- **构建工具**: Vite
+- **开发语言**: JavaScript/TypeScript
+- **样式**: CSS3
+- **代码规范**: ESLint + Prettier
 
 ## 开发指南
 
@@ -148,38 +210,34 @@ npm test
 
 {{license}}
 `;
-    }
-    getPackageJsonTemplate() {
-        return `{
+  }
+
+  private getPackageJsonTemplate(): string {
+    return `{
   "name": "{{kebabCase projectName}}",
   "version": "{{version}}",
   "description": "{{description}}",
+  "type": "module",
   "author": "{{author}}",
   "license": "{{license}}",
   "scripts": {
-    "dev:frontend": "cd src/frontend && npm run dev",
-    "dev:backend": "cd src/backend && npm run dev",
-    "dev": "concurrently \\"npm run dev:frontend\\" \\"npm run dev:backend\\"",
-    "build:frontend": "cd src/frontend && npm run build",
-    "build:backend": "cd src/backend && npm run build",
-    "build": "npm run build:frontend && npm run build:backend",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --write \\"**/*.{ts,tsx,json,md}\\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write \\"**/*.{js,jsx,ts,tsx,css,html,json,md}\\""
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "jest": "^29.7.0",
-    "eslint": "^8.55.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
+    "vite": "^5.0.10",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1"
   }
 }
 `;
-    }
-    getGitignoreTemplate() {
-        return `# Dependencies
+  }
+
+  private getGitignoreTemplate(): string {
+    return `# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -188,8 +246,6 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
-.next/
-out/
 
 # Environment files
 .env
@@ -215,9 +271,10 @@ coverage/
 *.tmp
 *.log
 `;
-    }
-    getClaudeMdTemplate() {
-        return `# AI 超级个体开发助手 v.4.0
+  }
+
+  private getClaudeMdTemplate(): string {
+    return `# AI 超级个体开发助手 v.4.0
 
 > **核心定位**: 为一个人开发软件提供全流程辅助，主动管理进度，调用专业Skill执行任务
 
@@ -436,12 +493,108 @@ TEST_PREREQUISITES:
 
 
 `;
-    }
-    getProjectOverviewTemplate() {
-        return `# {{projectName}} 项目概览
+  }
+
+  private getIndexHtmlTemplate(): string {
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{projectName}}</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{projectName}}</h1>
+      <p>{{description}}</p>
+      <p>这是一个由 AI Dev Template 创建的纯前端项目。</p>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+`;
+  }
+
+  private getMainJsTemplate(): string {
+    return `/**
+ * {{projectName}}
+ *
+ * @description {{description}}
+ * @author {{author}}
+ * @version {{version}}
+ */
+
+import './assets/styles/main.css';
+
+console.log('{{projectName}} 已启动！');
+console.log('版本: {{version}}');
+console.log('作者: {{author}}');
+
+// 在这里添加你的应用逻辑
+document.addEventListener('DOMContentLoaded', () => {
+  const app = document.getElementById('app');
+  if (app) {
+    console.log('应用容器已找到');
+  }
+});
+`;
+  }
+
+  private getMainCssTemplate(): string {
+    return `/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+`;
+  }
+
+  private getViteConfigTemplate(): string {
+    return `import { defineConfig } from 'vite';
+
+export default defineConfig({
+  server: {
+    port: 3000,
+    open: true,
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+  },
+});
+`;
+  }
+
+  private getProjectOverviewTemplate(): string {
+    return `# {{projectName}} 项目概览
 
 > **创建时间**: {{createdAt}}
-> **项目类型**: {{projectType}}
+> **项目类型**: 纯前端项目（Demo演示）
 > **版本**: {{version}}
 
 ## 产品愿景
@@ -484,31 +637,33 @@ TEST_PREREQUISITES:
 **最后更新**: {{createdAt}}
 **创建者**: {{author}}
 `;
-    }
-    getRequirementsAnalyzerSkill() {
-        return `# Requirements Analyzer Skill
+  }
+
+  private getRequirementsAnalyzerSkill(): string {
+    return `# Requirements Analyzer Skill
 
 产品需求分析师，通过结构化对话澄清需求，输出PRD文档、用户故事、原型图。
 `;
-    }
-    getArchitectureDesignerSkill() {
-        return `# Architecture Designer Skill
+  }
+
+  private getArchitectureDesignerSkill(): string {
+    return `# Architecture Designer Skill
 
 软件架构师，设计系统架构，包括技术选型、分层设计、模块划分、API设计、数据建模。
 `;
-    }
-    getDeveloperGuideSkill() {
-        return `# Developer Guide Skill
+  }
+
+  private getDeveloperGuideSkill(): string {
+    return `# Developer Guide Skill
 
 开发指导助手，包括代码生成、重构、代码审查、调试辅助。遵循Clean Code原则和项目编码规范。
 `;
-    }
-    getTestPlannerSkill() {
-        return `# Test Planner Skill
+  }
+
+  private getTestPlannerSkill(): string {
+    return `# Test Planner Skill
 
 测试策略设计师，设计和执行测试策略，包括测试计划、测试用例设计、单元测试、集成测试、E2E测试。
 `;
-    }
+  }
 }
-exports.WebFullstackTemplate = WebFullstackTemplate;
-//# sourceMappingURL=WebFullstackTemplate.js.map

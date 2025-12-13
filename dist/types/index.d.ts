@@ -1,4 +1,4 @@
-export type ProjectType = 'web-fullstack' | 'mobile-app' | 'backend-api' | 'cli-tool';
+export type ProjectType = 'web-fullstack' | 'frontend-demo' | 'mobile-app' | 'backend-api' | 'cli-tool';
 export interface ProjectMetadata {
     projectName: string;
     projectType: ProjectType;

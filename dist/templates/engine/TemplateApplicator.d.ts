@@ -13,6 +13,7 @@ export declare class TemplateApplicator {
     private generateFiles;
     validateTargetDir(targetDir: string, force?: boolean): Promise<void>;
     getPreview(template: Template, metadata: ProjectMetadata): TemplatePreview;
+    private createInputsDirectory;
 }
 interface TemplatePreview {
     directories: string[];

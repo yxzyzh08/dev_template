@@ -6,6 +6,7 @@
 
 import { Template, ProjectType } from '@/types';
 import { WebFullstackTemplate } from './templates/WebFullstackTemplate';
+import { FrontendDemoTemplate } from './templates/FrontendDemoTemplate';
 
 export class TemplateRegistry {
   private templates: Map<string, Template>;
@@ -21,6 +22,9 @@ export class TemplateRegistry {
   private registerDefaultTemplates(): void {
     const webFullstack = new WebFullstackTemplate();
     this.register(webFullstack.getTemplate());
+
+    const frontendDemo = new FrontendDemoTemplate();
+    this.register(frontendDemo.getTemplate());
   }
 
   /**

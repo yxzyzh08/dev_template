@@ -67,7 +67,7 @@ class InitWorkflow {
         if (!namePattern.test(metadata.projectName)) {
             throw new Error('项目名称只能包含字母、数字、横线和下划线');
         }
-        const validTypes = ['web-fullstack', 'mobile-app', 'backend-api', 'cli-tool'];
+        const validTypes = ['web-fullstack', 'frontend-demo', 'mobile-app', 'backend-api', 'cli-tool'];
         if (!validTypes.includes(metadata.projectType)) {
             throw new Error(`项目类型必须是: ${validTypes.join(', ')}`);
         }

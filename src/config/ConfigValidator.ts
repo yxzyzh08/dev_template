@@ -82,7 +82,7 @@ export class ConfigValidator {
     }
 
     // 验证项目类型
-    const validTypes = ['web-fullstack', 'mobile-app', 'backend-api', 'cli-tool'];
+    const validTypes = ['web-fullstack', 'frontend-demo', 'mobile-app', 'backend-api', 'cli-tool'];
     if (!validTypes.includes(project.type)) {
       errors.push({
         field: 'project.type',

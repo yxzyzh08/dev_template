@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TemplateRegistry = void 0;
 const WebFullstackTemplate_1 = require("./templates/WebFullstackTemplate");
+const FrontendDemoTemplate_1 = require("./templates/FrontendDemoTemplate");
 class TemplateRegistry {
     constructor() {
         this.templates = new Map();
@@ -10,6 +11,8 @@ class TemplateRegistry {
     registerDefaultTemplates() {
         const webFullstack = new WebFullstackTemplate_1.WebFullstackTemplate();
         this.register(webFullstack.getTemplate());
+        const frontendDemo = new FrontendDemoTemplate_1.FrontendDemoTemplate();
+        this.register(frontendDemo.getTemplate());
     }
     register(template) {
         if (this.templates.has(template.id)) {

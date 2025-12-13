@@ -44,6 +44,9 @@ export class TemplateApplicator {
 
     // 4. 生成所有文件
     await this.generateFiles(template, targetDir, variables);
+
+    // 5. 创建客户原始资料目录（所有项目类型通用）
+    await this.createInputsDirectory(targetDir);
   }
 
   /**
@@ -140,6 +143,75 @@ export class TemplateApplicator {
       estimatedFileCount: template.files.length,
       estimatedDirCount: template.directories.length,
     };
+  }
+
+  /**
+   * 创建客户原始资料目录
+   */
+  private async createInputsDirectory(targetDir: string): Promise<void> {
+    // 1. 创建 inputs/ 目录
+    const inputsDir = path.join(targetDir, 'inputs');
+    await this.fs.ensureDir(inputsDir);
+
+    // 2. 创建 README.md
+    const readmePath = path.join(inputsDir, 'README.md');
+    const readmeContent = `# 客户原始资料目录
+
+> **用途**: 存放客户提供的所有原始资料，保持原貌，不加工
+> **原则**: 只存不改，作为需求分析的源头参考
+
+---
+
+## 存放内容
+
+可以存放任何客户提供的原始资料：
+
+- **需求文档**: 客户的需求说明、功能描述、业务流程文档
+- **沟通记录**: 邮件往来、会议记录、聊天截图
+- **参考资料**: 竞品截图、参考案例、手绘原型、灵感图片
+- **数据样本**: Excel、CSV、JSON 等数据文件示例
+- **合同文档**: 合同、协议、技术规格书
+- **其他附件**: 任何客户提供的相关资料
+
+---
+
+## 使用方式
+
+### 新项目启动时
+1. 将客户提供的所有原始资料放入此目录
+2. 文件可以自由命名，建议包含日期和简短描述
+3. 启动需求分析时，requirements-analyzer 会参考这些资料
+
+### 文件命名建议
+\`\`\`
+2025-12-12-客户需求邮件.pdf
+2025-12-10-会议记录-第一次沟通.md
+竞品参考-某某系统截图.png
+数据样本-用户表.xlsx
+\`\`\`
+
+### 注意事项
+- ✅ 保持原始文件不修改
+- ✅ 可以添加新文件，但不要删除旧文件
+- ✅ 加工后的内容应存放在 \`docs/\` 目录下
+- ⚠️ 敏感信息注意脱敏处理
+
+---
+
+## 与其他目录的关系
+
+| 目录 | 用途 | 关系 |
+|------|------|------|
+| \`inputs/\` | 原始资料（未加工） | 输入源头 |
+| \`docs/\` | 结构化文档（已加工） | 基于 inputs 分析产出 |
+| \`src/\` | 源代码 | 基于 docs 开发产出 |
+
+---
+
+**当前状态**: 目录已创建，等待添加客户资料
+`;
+
+    await this.fs.writeFile(readmePath, readmeContent);
   }
 }
 

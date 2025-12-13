@@ -118,7 +118,7 @@ export class InitWorkflow {
     }
 
     // 验证项目类型
-    const validTypes = ['web-fullstack', 'mobile-app', 'backend-api', 'cli-tool'];
+    const validTypes = ['web-fullstack', 'frontend-demo', 'mobile-app', 'backend-api', 'cli-tool'];
     if (!validTypes.includes(metadata.projectType)) {
       throw new Error(`项目类型必须是: ${validTypes.join(', ')}`);
     }
