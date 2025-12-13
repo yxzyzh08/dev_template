@@ -107,6 +107,7 @@ elif current_phase == "测试验证":
 | 架构设计 | `docs/trackers/02-architecture.md` |
 | 代码实现 | `docs/trackers/03-implementation.md` |
 | 测试验证 | `docs/trackers/04-testing.md` |
+| 反馈收集 | `docs/trackers/99-feedback-log.md` |
 
 - **内容**: 详细计划、细粒度TODO，不需要提供日期，是给AI使用，只提供条目和依赖
 
@@ -176,7 +177,32 @@ TEST_PREREQUISITES:
 
 ---
 
-## 八、典型工作流
+## 六、反馈收集机制
+
+**目的**: 记录实际使用中的问题和想法，持续改进工具
+
+**触发时机**:
+```yaml
+主动提醒:
+  - 阶段门禁完成时: "过程中有遇到什么问题或想法吗？可以用 /feedback 记录"
+  - 遇到错误/阻塞时: "要记录这个问题吗？(/feedback)"
+  - 用户表达困惑时: "建议记录下来，用 /feedback"
+
+被动记录:
+  - 用户主动调用: /feedback
+```
+
+**记录文件**: `docs/trackers/99-feedback-log.md`
+
+**使用方式**:
+1. 用户调用 `/feedback` 指令
+2. AI引导用户填写：类型（问题/想法/改进）、描述、详情、上下文
+3. 追加到反馈日志（时间倒序）
+4. 定期（如项目完成时）调用 `requirements-analyzer` 分析反馈，规划改进
+
+---
+
+## 七、典型工作流
 
 **新项目**:
 ```
